@@ -1,7 +1,6 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
-};
-
-export default nextConfig;
+module.exports = {
+  // ... other config
+  experimental: {
+    serverComponentsExternalPackages: ['@react-three/fiber', '@react-three/drei'],
+  },
+}
