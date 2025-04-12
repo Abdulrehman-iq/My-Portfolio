@@ -223,7 +223,7 @@ export default function Hero() {
                 : 'border-[#0A84FF]/30 text-[#1C1C1E] hover:border-[#0A84FF] hover:bg-[#0A84FF]/5'
             }`}
           >
-            View Showcase
+            View Showcase.
             <FaArrowRight className="ml-2 opacity-0 group-hover:opacity-100 transform -translate-x-3 group-hover:translate-x-0 transition-all duration-300" />
           </a>
         </div>
