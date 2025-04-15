@@ -1,10 +1,7 @@
-
 // app/context/ThemeContext.tsx
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
-
-type Theme = 'light' | 'dark';
+import React, { createContext, useContext, useEffect } from 'react';
 
 // Define theme styles for easy access throughout the app
 export interface ThemeStyles {
@@ -38,134 +35,90 @@ export interface ThemeStyles {
 }
 
 interface ThemeContextType {
-  theme: Theme;
-  toggleTheme: () => void;
-  isDarkMode: boolean;
   styles: ThemeStyles;
+  isDarkMode: boolean;
+  theme: string;
+  toggleTheme: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>('light');
-  const isDarkMode = theme === 'dark';
-  
-  // Define theme styles based on current theme
+  // Define theme styles with fixed dark theme using #0d0d0d background and #fffce1 text
   const styles: ThemeStyles = {
     // Backgrounds
-    mainBg: isDarkMode 
-      ? 'bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900' 
-      : 'bg-gradient-to-br from-slate-50 via-white to-blue-50',
+    mainBg: 'bg-[#0d0d0d]',
     
-    cardBg: isDarkMode 
-      ? 'bg-slate-800/80 backdrop-blur-sm border border-slate-700/50' 
-      : 'bg-white backdrop-blur-sm border border-slate-100 shadow-sm',
+    cardBg: 'bg-[#121212] backdrop-blur-sm border border-[#2a2a2a]',
     
-    glassBg: isDarkMode
-      ? 'bg-slate-800/80 backdrop-blur-sm border border-slate-700/50 shadow-lg shadow-slate-900/30'
-      : 'bg-white backdrop-blur-sm shadow-xl border border-slate-100',
+    glassBg: 'bg-[#121212]/90 backdrop-blur-sm border border-[#2a2a2a] shadow-lg shadow-black/30 hover:border-[#3a3a3a] transition-all duration-300',
     
-    accentBg: isDarkMode
-      ? 'bg-slate-800 text-blue-400 border border-slate-700'
-      : 'bg-blue-50 text-blue-600 border border-blue-100',
+    accentBg: 'bg-[#1a1a1a] text-[#fffce1] border border-[#2a2a2a]',
     
-    // Text colors
-    headingText: isDarkMode 
-      ? 'text-white' 
-      : 'text-slate-900',
+    // Text colors - using #fffce1 (warm off-white) as the primary text color
+    headingText: 'text-[#fffce1] font-medium',
     
-    bodyText: isDarkMode 
-      ? 'text-slate-300' 
-      : 'text-slate-700',
+    bodyText: 'text-[#fffce1]/90',
     
-    accentText: isDarkMode 
-      ? 'text-blue-400' 
-      : 'text-blue-600',
+    accentText: 'text-emerald-400',
     
-    mutedText: isDarkMode 
-      ? 'text-slate-400' 
-      : 'text-slate-500',
+    mutedText: 'text-[#fffce1]/60',
     
     // Borders and shadows
-    border: isDarkMode 
-      ? 'border-slate-700/50' 
-      : 'border-slate-100',
+    border: 'border-[#2a2a2a]',
     
-    shadow: isDarkMode 
-      ? 'shadow-lg shadow-black/20' 
-      : 'shadow-lg shadow-blue-500/10',
+    shadow: 'shadow-lg shadow-black/30',
     
     // Gradients
-    gradient: isDarkMode 
-      ? 'text-blue-500' 
-      : 'bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-indigo-600',
+    gradient: 'text-emerald-400 hover:text-emerald-300 transition-colors duration-300',
     
-    buttonGradient: isDarkMode
-      ? 'bg-gradient-to-r from-blue-600 to-indigo-700 shadow-blue-500/20'
-      : 'bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 shadow-blue-500/20',
+    buttonGradient: 'bg-gradient-to-r from-emerald-700 to-teal-800 shadow-emerald-900/30',
     
     // Component specific styles
-    pill: isDarkMode
-      ? 'bg-slate-800/80 backdrop-blur-sm border border-slate-700/50'
-      : 'bg-white backdrop-blur-sm border border-slate-100 shadow-sm',
+    pill: 'bg-[#1a1a1a] backdrop-blur-sm border border-[#2a2a2a] hover:border-[#3a3a3a] hover:bg-[#1F1F1F] transition-all duration-300',
     
-    card: isDarkMode
-      ? 'bg-slate-800/80 backdrop-blur-sm border border-slate-700/50 shadow-lg shadow-slate-900/30'
-      : 'bg-white backdrop-blur-sm shadow-xl border border-slate-100',
+    card: 'bg-[#1a1a1a] backdrop-blur-sm border border-[#2a2a2a] shadow-lg shadow-black/30 hover:border-[#3a3a3a] hover:shadow-xl transition-all duration-300',
     
     button: {
-      primary: isDarkMode
-        ? 'bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-xl shadow-blue-500/20 hover:shadow-2xl hover:shadow-blue-500/30'
-        : 'bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-xl shadow-blue-500/20 hover:shadow-2xl hover:shadow-blue-500/30',
+      primary: 'bg-gradient-to-r from-emerald-700 to-teal-800 text-[#fffce1] shadow-lg shadow-black/30 hover:shadow-xl hover:from-emerald-600 hover:to-teal-700 hover:shadow-black/40 transition-all duration-300',
       
-      secondary: isDarkMode
-        ? 'border-2 border-blue-500 text-blue-400 hover:bg-blue-900/20'
-        : 'border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-50'
+      secondary: 'border-2 border-emerald-700 text-emerald-400 hover:bg-emerald-900/20 transition-colors duration-300'
     }
   };
 
-  useEffect(() => {
-    // Check if we're in a browser environment
-    if (typeof window !== 'undefined') {
-      try {
-        // Load theme from localStorage if available
-        const savedTheme = localStorage.getItem('theme') as Theme | null;
-        if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
-          setTheme(savedTheme);
-        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-          // Fall back to system preference
-          setTheme('dark');
-        }
-      } catch (error) {
-        console.error('Error accessing localStorage:', error);
-      }
-    }
-  }, []);
-
+  // Apply dark theme to document when component mounts
   useEffect(() => {
     if (typeof window !== 'undefined') {
       try {
-        // Apply theme to document
-        if (theme === 'dark') {
-          document.documentElement.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
-        }
+        // Always apply dark theme to document
+        document.documentElement.classList.add('dark');
         
-        // Save theme to localStorage
-        localStorage.setItem('theme', theme);
+        // Set background color using inline style for better coverage
+        document.body.style.backgroundColor = '#0d0d0d';
+        document.body.style.color = '#fffce1';
+        
+        // Add CSS variable for consistent use in other components
+        document.documentElement.style.setProperty('--background-color', '#0d0d0d');
+        document.documentElement.style.setProperty('--text-color', '#fffce1');
+        document.documentElement.style.setProperty('--accent-color', '#10b981'); // emerald-500
+        document.documentElement.style.setProperty('--card-bg-color', '#1a1a1a');
+        document.documentElement.style.setProperty('--border-color', '#2a2a2a');
       } catch (error) {
         console.error('Error setting theme:', error);
       }
     }
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
-  };
+  }, []);
+  
+  // Dummy toggle function for API compatibility
+  const toggleTheme = () => {};
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, isDarkMode, styles }}>
+    <ThemeContext.Provider value={{ 
+      styles, 
+      isDarkMode: true,
+      theme: 'dark',
+      toggleTheme 
+    }}>
       {children}
     </ThemeContext.Provider>
   );
@@ -176,5 +129,6 @@ export function useTheme() {
   if (context === undefined) {
     throw new Error('useTheme must be used within a ThemeProvider');
   }
+  
   return context;
 }

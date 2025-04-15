@@ -1,15 +1,20 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { FaGithub, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaWhatsapp, FaReact, FaNodeJs } from 'react-icons/fa';
+import { SiNextdotjs, SiTailwindcss, SiTypescript } from 'react-icons/si';
 import { motion } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
+import gsap from 'gsap';
+import SplitType from 'split-type';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const { theme } = useTheme();
-  const isDarkMode = theme === 'dark';
+  const { styles } = useTheme();
+  const logoRef = useRef<HTMLDivElement>(null);
+  const logoCharsRef = useRef<HTMLSpanElement[]>([]);
+  const [isAnimated, setIsAnimated] = useState(false);
 
   // Detect scroll position to change navbar styles
   useEffect(() => {
@@ -24,28 +29,104 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [scrolled]);
 
+  // Initialize logo character animations
+  useEffect(() => {
+    if (!logoRef.current || isAnimated) return;
+
+    const splitLogo = new SplitType(logoRef.current, {
+      types: 'chars',
+      tagName: 'span'
+    });
+
+    if (splitLogo.chars) {
+      logoCharsRef.current = Array.from(splitLogo.chars);
+      setIsAnimated(true);
+
+      // Add hover effect to each character
+      logoCharsRef.current.forEach((char, index) => {
+        char.style.display = 'inline-block';
+        char.style.transition = 'transform 0.2s ease-out';
+        
+        char.addEventListener('mouseenter', () => {
+          // Different animation for AR, IQ, and Systems
+          if (index < 2) { 
+            // AR - Green
+            gsap.to(char, { y: -5, scale: 1.2, color: '#4ade80', duration: 0.3 });
+          } else if (index < 4) { 
+            // IQ - Cyan
+            gsap.to(char, { y: -5, scale: 1.2, color: '#22d3ee', duration: 0.3 });
+          } else { 
+            // Systems - Blue
+            gsap.to(char, { y: -5, scale: 1.2, color: '#60a5fa', duration: 0.3 });
+          }
+        });
+        
+        char.addEventListener('mouseleave', () => {
+          gsap.to(char, { y: 0, scale: 1, color: '#fffce1', duration: 0.5 });
+        });
+      });
+    }
+
+    return () => {
+      // Clean up event listeners
+      logoCharsRef.current.forEach(char => {
+        char.removeEventListener('mouseenter', () => {});
+        char.removeEventListener('mouseleave', () => {});
+      });
+    };
+  }, []);
+
+  // Tech icons that appear on logo hover
+  const techIcons = [
+    { icon: FaReact, color: "#61DAFB", delay: 0 },
+    { icon: SiNextdotjs, color: "#fffce1", delay: 0.1 },
+    { icon: SiTailwindcss, color: "#06B6D4", delay: 0.2 },
+    { icon: FaNodeJs, color: "#339933", delay: 0.3 },
+    { icon: SiTypescript, color: "#3178C6", delay: 0.4 },
+  ];
+
   return (
     <motion.header 
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
         scrolled 
-          ? isDarkMode
-            ? 'bg-slate-800/95 backdrop-blur-md shadow-md shadow-black/20 py-4'
-            : 'bg-white/95 backdrop-blur-md shadow-md shadow-slate-200/20 py-4'
-          : isDarkMode
-            ? 'bg-slate-800/80 backdrop-blur-sm py-6'
-            : 'bg-white/80 backdrop-blur-sm py-6'
+          ? 'bg-[#161616]/95 backdrop-blur-md shadow-md shadow-black/20 py-4'
+          : 'bg-transparent py-6'
       }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
     >
       <div className="container mx-auto px-4 md:px-6 flex justify-between items-center">
-        {/* Name/Logo */}
-        <Link href="/" className="font-rajdhani font-bold text-xl md:text-2xl tracking-tight relative group">
-          <span className={isDarkMode ? "text-white" : "text-slate-900"}>Abdulrehman Iqbal</span>
-          <span className="text-blue-500">.</span>
-          <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></div>
-        </Link>
+        {/* Name/Logo with hover animations */}
+        <div className="relative group">
+          <Link href="/" className="block">
+            <div 
+              ref={logoRef} 
+              className="font-outfit font-extrabold text-xl md:text-2xl tracking-tight text-[#fffce1] perspective-1000"
+            >
+              ARIQ Systems
+              <span className="text-blue-400">.</span>
+            </div>
+          </Link>
+          
+          {/* Animated underline */}
+          <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-green-400 via-cyan-400 to-blue-400 group-hover:w-full transition-all duration-300"></div>
+          
+          {/* Tech icons that appear on hover */}
+          <div className="absolute -bottom-8 left-0 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            {techIcons.map((tech, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: tech.delay }}
+                className="text-sm"
+              >
+                <tech.icon style={{ color: tech.color }} />
+              </motion.div>
+            ))}
+          </div>
+        </div>
 
         {/* Social Links */}
         <div className="flex items-center space-x-5">
@@ -54,7 +135,7 @@ export default function Navbar() {
             href="https://github.com/yourusername" 
             target="_blank"
             rel="noopener noreferrer"
-            className={`${isDarkMode ? "text-slate-300 hover:text-white" : "text-slate-700 hover:text-slate-900"} transition-colors`}
+            className="text-[#fffce1]/80 hover:text-[#fffce1] transition-colors"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -67,7 +148,7 @@ export default function Navbar() {
             href="https://linkedin.com/in/yourusername" 
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-600 hover:text-blue-700 transition-colors"
+            className="text-blue-400 hover:text-blue-300 transition-colors"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -80,7 +161,7 @@ export default function Navbar() {
             href="https://wa.me/yournumber" 
             target="_blank"
             rel="noopener noreferrer"
-            className="text-green-600 hover:text-green-700 transition-colors"
+            className="text-[#fffce1]/80 hover:text-[#fffce1] transition-colors"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
           >
