@@ -184,7 +184,7 @@ export default function Hero() {
       ref={sectionRef}
       className="relative overflow-hidden pb-48"
       style={{
-        background: 'linear-gradient(135deg, #0f0f0f, #1a1a1a)'
+        background: '#0d0d0d'
       }}
     >
       {/* Background with animated 3D elements */}
@@ -192,11 +192,11 @@ export default function Hero() {
         {/* Abstract shape 1 - Cyan */}
         <motion.div 
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.3 }}
+          animate={{ opacity: 0.35 }}
           transition={{ duration: 1.5, delay: 0.2 }}
           className="bg-shape absolute top-20 -left-20 w-[500px] h-[500px] rounded-full"
           style={{
-            background: 'radial-gradient(circle, rgba(0, 201, 255, 0.15), rgba(0, 201, 255, 0.05))',
+            background: 'radial-gradient(circle, rgba(0, 201, 255, 0.2), rgba(0, 201, 255, 0.05))',
             filter: 'blur(80px)'
           }}
         ></motion.div>
@@ -204,11 +204,11 @@ export default function Hero() {
         {/* Abstract shape 2 - Green */}
         <motion.div 
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.3 }}
+          animate={{ opacity: 0.35 }}
           transition={{ duration: 1.5, delay: 0.5 }}
           className="bg-shape absolute -bottom-40 -right-20 w-[600px] h-[600px] rounded-full"
           style={{
-            background: 'radial-gradient(circle, rgba(146, 254, 157, 0.15), rgba(146, 254, 157, 0.05))',
+            background: 'radial-gradient(circle, rgba(146, 254, 157, 0.2), rgba(146, 254, 157, 0.05))',
             filter: 'blur(100px)'
           }}
         ></motion.div>
@@ -216,22 +216,22 @@ export default function Hero() {
         {/* Add extra floating elements that react to scroll */}
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.2 }}
+          animate={{ opacity: 0.25 }}
           transition={{ duration: 1.5, delay: 0.7 }}
           className="bg-shape absolute top-1/3 right-[20%] w-[200px] h-[200px] rounded-full"
           style={{
-            background: 'radial-gradient(circle, rgba(0, 201, 255, 0.1), rgba(0, 201, 255, 0.03))',
+            background: 'radial-gradient(circle, rgba(0, 201, 255, 0.15), rgba(0, 201, 255, 0.03))',
             filter: 'blur(60px)'
           }}
         ></motion.div>
         
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.2 }}
+          animate={{ opacity: 0.25 }}
           transition={{ duration: 1.5, delay: 0.9 }}
           className="bg-shape absolute bottom-1/4 left-[15%] w-[300px] h-[300px] rounded-full"
           style={{
-            background: 'radial-gradient(circle, rgba(146, 254, 157, 0.1), rgba(146, 254, 157, 0.03))',
+            background: 'radial-gradient(circle, rgba(146, 254, 157, 0.15), rgba(146, 254, 157, 0.03))',
             filter: 'blur(70px)'
           }}
         ></motion.div>
@@ -331,7 +331,7 @@ export default function Hero() {
                 className="px-6 py-3 font-medium rounded-xl text-[#fffce1] transition-all duration-300"
                 style={{
                   border: '2px solid transparent',
-                  backgroundImage: 'linear-gradient(#1a1a1a, #1a1a1a), linear-gradient(90deg, #00c9ff, #92fe9d)',
+                  backgroundImage: 'linear-gradient(#0d0d0d, #0d0d0d), linear-gradient(90deg, #00c9ff, #92fe9d)',
                   backgroundOrigin: 'border-box',
                   backgroundClip: 'padding-box, border-box',
                   boxShadow: '0 0 20px rgba(0, 201, 255, 0.2)'
