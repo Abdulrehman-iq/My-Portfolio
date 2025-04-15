@@ -1,8 +1,7 @@
-
 'use client'
 
-import { useRef } from 'react'
-import { motion, useScroll, useTransform, useInView } from 'framer-motion'
+import { useRef, useState, useEffect } from 'react'
+import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion'
 import { FaCode, FaMobileAlt, FaRocket, FaTools, FaUserTie, FaGlobe } from 'react-icons/fa'
 import { useTheme } from '../context/ThemeContext'
 
@@ -24,6 +23,37 @@ export default function WhyChooseAriqSystems() {
   })
   
   const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
+  const rotateX = useTransform(scrollYProgress, [0, 0.5], [0, 10])
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1.05, 1])
+  
+  // For floating animation on hover
+  const [hoveredFeature, setHoveredFeature] = useState<number | null>(null)
+  
+  // Animated typing effect for the title
+  const [displayedTitle, setDisplayedTitle] = useState("")
+  const fullTitle = "Why Choose Ariq Systems"
+  
+  useEffect(() => {
+    if (isTitleInView) {
+      let i = 0
+      const typingInterval = setInterval(() => {
+        if (i < fullTitle.length) {
+          setDisplayedTitle(fullTitle.substring(0, i + 1))
+          i++
+        } else {
+          clearInterval(typingInterval)
+        }
+      }, 100)
+      
+      return () => clearInterval(typingInterval)
+    }
+  }, [isTitleInView])
+  
+  // Cyan to Green gradient (matching Hero.tsx)
+  const gradientColors = {
+    start: "#00c9ff", // cyan
+    end: "#92fe9d"    // green
+  };
   
   // Animated features with icons (removed AI specifics)
   const features = [
@@ -59,26 +89,129 @@ export default function WhyChooseAriqSystems() {
     }
   ]
 
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.3
+      }
+    }
+  }
+  
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+  }
+  
+  const iconAnimation = {
+    rest: { scale: 1 },
+    hover: { 
+      scale: 1.2, 
+      rotate: [0, 10, -10, 0],
+      transition: { 
+        duration: 0.6, 
+        ease: "easeInOut",
+        rotate: {
+          repeat: Infinity,
+          repeatType: "mirror",
+          duration: 2
+        }
+      }
+    }
+  }
+  
+  const fadeInUp = {
+    initial: { opacity: 0, y: 30 },
+    animate: { opacity: 1, y: 0, transition: { duration: 0.8 } }
+  }
+
   return (
     <section
       ref={containerRef}
-      className={`relative py-24 overflow-hidden ${styles.mainBg}`}
+      className="relative py-24 overflow-hidden"
       id="why-choose"
+      style={{
+        background: '#0d0d0d'
+      }}
     >
-      {/* Background Elements */}
+      {/* Background Elements with interactive animations */}
       <div className="absolute inset-0 z-0">
+        {/* Abstract shape 1 - Cyan - with mouse follow effect */}
         <motion.div 
-          style={{ y: backgroundY }}
-          className="absolute -right-20 top-10 w-[600px] h-[600px] rounded-full bg-lime-400/5 blur-[100px]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.35 }}
+          transition={{ duration: 1.5, delay: 0.2 }}
+          className="absolute top-20 -left-20 w-[500px] h-[500px] rounded-full"
+          style={{
+            background: 'radial-gradient(circle, rgba(0, 201, 255, 0.2), rgba(0, 201, 255, 0.05))',
+            filter: 'blur(80px)',
+            y: backgroundY,
+            scale
+          }}
         />
+        
+        {/* Abstract shape 2 - Green */}
         <motion.div 
-          style={{ y: backgroundY }}
-          className="absolute -left-20 bottom-10 w-[500px] h-[500px] rounded-full bg-amber-400/5 blur-[80px]"
+          initial={{ opacity: 0 }}
+          animate={{ 
+            opacity: 0.35,
+            rotate: [0, 5, 0, -5, 0]
+          }}
+          transition={{ 
+            opacity: { duration: 1.5, delay: 0.5 },
+            rotate: { repeat: Infinity, duration: 20, ease: "linear" }
+          }}
+          className="absolute -bottom-40 -right-20 w-[600px] h-[600px] rounded-full"
+          style={{
+            background: 'radial-gradient(circle, rgba(146, 254, 157, 0.2), rgba(146, 254, 157, 0.05))',
+            filter: 'blur(100px)',
+            y: backgroundY
+          }}
+        />
+        
+        {/* Add extra floating elements that react to scroll */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ 
+            opacity: 0.25,
+            x: [0, 10, 0, -10, 0]
+          }}
+          transition={{ 
+            opacity: { duration: 1.5, delay: 0.7 },
+            x: { repeat: Infinity, duration: 15, ease: "easeInOut" }
+          }}
+          className="absolute top-1/3 right-[20%] w-[200px] h-[200px] rounded-full"
+          style={{
+            background: 'radial-gradient(circle, rgba(0, 201, 255, 0.15), rgba(0, 201, 255, 0.03))',
+            filter: 'blur(60px)',
+            y: backgroundY
+          }}
+        />
+        
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ 
+            opacity: 0.25,
+            scale: [1, 1.1, 1, 0.9, 1]
+          }}
+          transition={{ 
+            opacity: { duration: 1.5, delay: 0.9 },
+            scale: { repeat: Infinity, duration: 12, ease: "easeInOut" }
+          }}
+          className="absolute bottom-1/4 left-[15%] w-[300px] h-[300px] rounded-full"
+          style={{
+            background: 'radial-gradient(circle, rgba(146, 254, 157, 0.15), rgba(146, 254, 157, 0.03))',
+            filter: 'blur(70px)',
+            y: backgroundY
+          }}
         />
       </div>
       
       <div className="container mx-auto px-6 relative z-10">
-        {/* Section Header */}
+        {/* Section Header with typing effect */}
         <motion.div
           ref={titleRef}
           initial={{ opacity: 0, y: 20 }}
@@ -86,185 +219,464 @@ export default function WhyChooseAriqSystems() {
           transition={{ duration: 0.7, ease: "easeOut" }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-lime-400 to-amber-400 text-transparent bg-clip-text font-outfit">
-            Why Choose Ariq Systems
-          </h2>
-          <p className="text-lg text-lime-200/90 leading-relaxed">
+          <motion.h2 
+            className="text-4xl md:text-5xl font-bold mb-6 text-transparent bg-clip-text font-outfit"
+            style={{ backgroundImage: 'linear-gradient(90deg, #00c9ff, #92fe9d)' }}
+          >
+            {displayedTitle}
+            <motion.span 
+              animate={{ opacity: [1, 0, 1] }}
+              transition={{ repeat: Infinity, duration: 1 }}
+              className="ml-1 inline-block"
+            >
+              |
+            </motion.span>
+          </motion.h2>
+          <motion.p 
+            className="text-lg text-[#fffce1]/90 leading-relaxed"
+            initial={{ opacity: 0, y: 20 }}
+            animate={isTitleInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.7, delay: 1.5, ease: "easeOut" }}
+          >
             Delivering exceptional software solutions through thoughtful design, clean code, and innovative approaches that 
             solve real business problems and create delightful user experiences.
-          </p>
+          </motion.p>
         </motion.div>
         
-        {/* Main Content Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        {/* Main Content Grid with staggered entrance and hover effects */}
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+        >
           {features.map((feature, index) => (
             <motion.div
               key={index}
               ref={refs[index]}
-              initial={{ opacity: 0, y: 30 }}
-              animate={inViews[index] ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="p-6 rounded-2xl border border-lime-800/30 bg-lime-900/20 backdrop-blur-sm hover:border-lime-700/50 transition-all duration-300"
+              variants={itemVariants}
+              whileHover={{ 
+                y: -5, 
+                boxShadow: '0 10px 20px rgba(0, 201, 255, 0.1)',
+                transition: { duration: 0.3 } 
+              }}
+              onHoverStart={() => setHoveredFeature(index)}
+              onHoverEnd={() => setHoveredFeature(null)}
+              className="p-6 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 hover:border-white/20 transition-all duration-300"
             >
-              <div className="bg-gradient-to-r from-lime-500 to-amber-500 rounded-xl w-14 h-14 flex items-center justify-center mb-5 text-black">
-                <feature.icon className="text-2xl" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-lime-200">{feature.title}</h3>
-              <p className="text-lime-200/70">{feature.description}</p>
+              <motion.div 
+                className="w-14 h-14 flex items-center justify-center mb-5 rounded-xl bg-white/5"
+                variants={iconAnimation}
+                initial="rest"
+                animate={hoveredFeature === index ? "hover" : "rest"}
+              >
+                <feature.icon 
+                  className="text-2xl" 
+                  style={{ color: index % 2 === 0 ? '#00c9ff' : '#92fe9d' }}
+                />
+              </motion.div>
+              <h3 className="text-xl font-semibold mb-3 text-[#fffce1]">{feature.title}</h3>
+              <p className="text-[#fffce1]/70">{feature.description}</p>
+              
+             {/* Animated icon that appears on hover (without "Learn more" text) */}
+<AnimatePresence>
+  {hoveredFeature === index && (
+    <motion.div
+      initial={{ opacity: 0, x: -10 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -10 }}
+      transition={{ duration: 0.2 }}
+      className="mt-4 flex justify-center"
+      style={{ color: index % 2 === 0 ? '#00c9ff' : '#92fe9d' }}
+    >
+      <motion.span
+        animate={{ x: [0, 5, 0] }}
+        transition={{ repeat: Infinity, duration: 1.5 }}
+      >
+      </motion.span>
+    </motion.div>
+  )}
+</AnimatePresence>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
         
-        {/* Cross-Platform Experience Showcase */}
+        {/* Cross-Platform Experience Showcase with scroll-triggered animations */}
         <motion.div
+          style={{ rotateX }}
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="flex flex-col md:flex-row items-center gap-10 mb-20"
+          className="flex flex-col md:flex-row items-center gap-10 mb-20 perspective-1000"
         >
-          {/* Illustration */}
-          <div className="md:w-1/2 flex justify-center">
+          {/* Illustration with interactive elements */}
+          <motion.div 
+            className="md:w-1/2 flex justify-center"
+            whileInView={{ 
+              rotate: [0, 5, 0, -5, 0],
+              transition: { duration: 10, repeat: Infinity, ease: "easeInOut" }
+            }}
+            viewport={{ once: false, amount: 0.5 }}
+          >
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-lime-500/20 to-amber-500/20 blur-2xl rounded-full"></div>
-              <div className="relative w-[300px] h-[300px] flex items-center justify-center">
-                {/* Developer Illustration (simplified with SVG) */}
+              <div 
+                className="absolute inset-0 blur-2xl rounded-full"
+                style={{
+                  background: 'radial-gradient(circle, rgba(0, 201, 255, 0.2), rgba(146, 254, 157, 0.1))'
+                }}
+              ></div>
+              <motion.div 
+                className="relative w-[300px] h-[300px] flex items-center justify-center"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.3 }}
+              >
+                {/* Developer Illustration (simplified with SVG) with animated elements */}
                 <svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="100" y="50" width="100" height="80" rx="10" fill="#84cc16" opacity="0.7" />
+                  <motion.rect 
+                    x="100" y="50" width="100" height="80" rx="10" fill="#00c9ff" opacity="0.7"
+                    animate={{ y: [0, -5, 0], opacity: [0.7, 0.9, 0.7] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  />
                   <rect x="115" y="70" width="70" height="40" rx="5" fill="#0d0d0d" />
-                  <rect x="125" y="80" width="50" height="5" rx="2" fill="#d9f99d" />
-                  <rect x="125" y="90" width="50" height="5" rx="2" fill="#d9f99d" />
-                  <rect x="125" y="100" width="30" height="5" rx="2" fill="#d9f99d" />
-                  <circle cx="150" cy="170" r="30" fill="#84cc16" opacity="0.7" />
-                  <rect x="135" y="150" width="30" height="60" rx="15" fill="#84cc16" opacity="0.7" />
-                  <rect x="110" y="180" width="40" height="10" rx="5" fill="#84cc16" opacity="0.7" />
-                  <rect x="150" y="180" width="40" height="10" rx="5" fill="#84cc16" opacity="0.7" />
-                  <rect x="135" y="210" width="10" height="40" rx="5" fill="#84cc16" opacity="0.7" />
-                  <rect x="155" y="210" width="10" height="40" rx="5" fill="#84cc16" opacity="0.7" />
+                  <motion.rect 
+                    x="125" y="80" width="50" height="5" rx="2" fill="#fffce1"
+                    animate={{ width: [50, 30, 50] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", repeatType: "reverse" }}
+                  />
+                  <rect x="125" y="90" width="50" height="5" rx="2" fill="#fffce1" />
+                  <rect x="125" y="100" width="30" height="5" rx="2" fill="#fffce1" />
+                  <motion.circle 
+                    cx="150" cy="170" r="30" fill="#00c9ff" opacity="0.7"
+                    animate={{ r: [30, 32, 30], opacity: [0.7, 0.8, 0.7] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                  <rect x="135" y="150" width="30" height="60" rx="15" fill="#00c9ff" opacity="0.7" />
+                  <rect x="110" y="180" width="40" height="10" rx="5" fill="#00c9ff" opacity="0.7" />
+                  <rect x="150" y="180" width="40" height="10" rx="5" fill="#00c9ff" opacity="0.7" />
+                  <motion.rect 
+                    x="135" y="210" width="10" height="40" rx="5" fill="#00c9ff" opacity="0.7"
+                    animate={{ y: [210, 215, 210] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                  />
+                  <motion.rect 
+                    x="155" y="210" width="10" height="40" rx="5" fill="#00c9ff" opacity="0.7"
+                    animate={{ y: [210, 215, 210] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1.3 }}
+                  />
                   <circle cx="150" cy="150" r="15" fill="#0d0d0d" />
-                  <circle cx="145" cy="145" r="3" fill="white" />
+                  <motion.circle 
+                    cx="145" cy="145" r="3" fill="white"
+                    animate={{ opacity: [1, 0.5, 1] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  />
                 </svg>
-              </div>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
           
-          {/* Text Content */}
-          <div className="md:w-1/2">
-            <h3 className="text-2xl font-bold mb-4 text-lime-200">Bridging Web & Mobile Platforms</h3>
-            <p className="text-lime-200/80 mb-4 leading-relaxed">
+          {/* Text Content with animated entrance of items */}
+          <motion.div 
+            className="md:w-1/2"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.5 }}
+          >
+            <motion.h3 
+              variants={itemVariants}
+              className="text-2xl font-bold mb-4 text-[#fffce1]"
+            >
+              Bridging Web & Mobile Platforms
+            </motion.h3>
+            <motion.p 
+              variants={itemVariants}
+              className="text-[#fffce1]/80 mb-4 leading-relaxed"
+            >
               With extensive experience across both web and mobile development ecosystems, Ariq Systems delivers cohesive 
               solutions that work seamlessly wherever your users are.
-            </p>
-            <p className="text-lime-200/80 mb-6 leading-relaxed">
+            </motion.p>
+            <motion.p 
+              variants={itemVariants}
+              className="text-[#fffce1]/80 mb-6 leading-relaxed"
+            >
               Each project benefits from platform-specific optimization while maintaining consistency in quality, 
               performance, and user experience.
-            </p>
-            <ul className="space-y-2">
+            </motion.p>
+            <motion.ul 
+              variants={containerVariants}
+              className="space-y-2"
+            >
               {["React & Next.js", "React Native", "Node.js", "RESTful APIs", "TypeScript", "Database Design"].map((skill, index) => (
-                <li key={index} className="flex items-center">
-                  <span className="w-2 h-2 rounded-full bg-lime-400 mr-2"></span>
-                  <span className="text-lime-200/90">{skill}</span>
-                </li>
+                <motion.li 
+                  key={index} 
+                  className="flex items-center"
+                  variants={itemVariants}
+                  whileHover={{ x: 5, transition: { duration: 0.2 } }}
+                >
+                  <motion.span 
+                    className="w-2 h-2 rounded-full mr-2"
+                    style={{ backgroundColor: index % 2 === 0 ? '#00c9ff' : '#92fe9d' }}
+                    animate={{ scale: [1, 1.5, 1] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: index * 0.2 }}
+                  ></motion.span>
+                  <span className="text-[#fffce1]/90">{skill}</span>
+                </motion.li>
               ))}
-            </ul>
-          </div>
+            </motion.ul>
+          </motion.div>
         </motion.div>
         
-        {/* Future Vision - Modified to downplay specific AI focus */}
+        {/* Future Vision with parallax effect */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
           transition={{ duration: 0.7, delay: 0.4 }}
           className="flex flex-col md:flex-row-reverse items-center gap-10"
         >
-          {/* Generic technology illustration */}
+          {/* Generic technology illustration with animated nodes */}
           <div className="md:w-1/2 flex justify-center">
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-amber-500/20 to-lime-500/20 blur-2xl rounded-full"></div>
+              <motion.div 
+                className="absolute inset-0 blur-2xl rounded-full"
+                animate={{ 
+                  background: [
+                    'radial-gradient(circle, rgba(146, 254, 157, 0.2), rgba(0, 201, 255, 0.1))',
+                    'radial-gradient(circle, rgba(0, 201, 255, 0.2), rgba(146, 254, 157, 0.1))',
+                    'radial-gradient(circle, rgba(146, 254, 157, 0.2), rgba(0, 201, 255, 0.1))'
+                  ]
+                }}
+                transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+              ></motion.div>
               <div className="relative w-[300px] h-[300px] flex items-center justify-center">
-                {/* Technology/Future Illustration (simplified with SVG) - less AI specific */}
+                {/* Technology/Future Illustration with animated connections */}
                 <svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="150" cy="150" r="80" fill="#84cc16" opacity="0.2" />
-                  <circle cx="150" cy="150" r="70" fill="#84cc16" opacity="0.2" stroke="#84cc16" strokeWidth="1" />
+                  <motion.circle 
+                    cx="150" cy="150" r="80" fill="#00c9ff" opacity="0.2"
+                    animate={{ r: [80, 85, 80] }}
+                    transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                  <motion.circle 
+                    cx="150" cy="150" r="70" fill="#00c9ff" opacity="0.2" stroke="#00c9ff" strokeWidth="1"
+                    animate={{ r: [70, 65, 70] }}
+                    transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                  />
                   
-                  {/* Connected nodes representing technology */}
-                  <circle cx="150" cy="150" r="10" fill="#84cc16" />
-                  <circle cx="200" cy="130" r="8" fill="#84cc16" />
-                  <circle cx="180" cy="190" r="8" fill="#84cc16" />
-                  <circle cx="120" cy="190" r="8" fill="#84cc16" />
-                  <circle cx="100" cy="130" r="8" fill="#84cc16" />
+                  {/* Connected nodes representing technology with pulse animations */}
+                  <motion.circle 
+                    cx="150" cy="150" r="10" fill="#00c9ff"
+                    animate={{ r: [10, 12, 10], fill: ['#00c9ff', '#92fe9d', '#00c9ff'] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                  <motion.circle 
+                    cx="200" cy="130" r="8" fill="#00c9ff"
+                    animate={{ r: [8, 10, 8] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                  />
+                  <motion.circle 
+                    cx="180" cy="190" r="8" fill="#92fe9d"
+                    animate={{ r: [8, 10, 8] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                  />
+                  <motion.circle 
+                    cx="120" cy="190" r="8" fill="#92fe9d"
+                    animate={{ r: [8, 10, 8] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+                  />
+                  <motion.circle 
+                    cx="100" cy="130" r="8" fill="#00c9ff"
+                    animate={{ r: [8, 10, 8] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+                  />
                   
-                  {/* Connecting lines */}
-                  <line x1="150" y1="150" x2="200" y2="130" stroke="#84cc16" strokeWidth="1" />
-                  <line x1="150" y1="150" x2="180" y2="190" stroke="#84cc16" strokeWidth="1" />
-                  <line x1="150" y1="150" x2="120" y2="190" stroke="#84cc16" strokeWidth="1" />
-                  <line x1="150" y1="150" x2="100" y2="130" stroke="#84cc16" strokeWidth="1" />
-                  <line x1="200" y1="130" x2="180" y2="190" stroke="#84cc16" strokeWidth="1" opacity="0.5" />
-                  <line x1="180" y1="190" x2="120" y2="190" stroke="#84cc16" strokeWidth="1" opacity="0.5" />
-                  <line x1="120" y1="190" x2="100" y2="130" stroke="#84cc16" strokeWidth="1" opacity="0.5" />
-                  <line x1="100" y1="130" x2="200" y2="130" stroke="#84cc16" strokeWidth="1" opacity="0.5" />
+                  {/* Animated connecting lines with pulse effect */}
+                  <motion.line 
+                    x1="150" y1="150" x2="200" y2="130" stroke="#00c9ff" strokeWidth="1"
+                    animate={{ strokeWidth: [1, 2, 1], opacity: [1, 0.6, 1] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                  <motion.line 
+                    x1="150" y1="150" x2="180" y2="190" stroke="#92fe9d" strokeWidth="1"
+                    animate={{ strokeWidth: [1, 2, 1], opacity: [1, 0.6, 1] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                  />
+                  <motion.line 
+                    x1="150" y1="150" x2="120" y2="190" stroke="#92fe9d" strokeWidth="1"
+                    animate={{ strokeWidth: [1, 2, 1], opacity: [1, 0.6, 1] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                  />
+                  <motion.line 
+                    x1="150" y1="150" x2="100" y2="130" stroke="#00c9ff" strokeWidth="1"
+                    animate={{ strokeWidth: [1, 2, 1], opacity: [1, 0.6, 1] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+                  />
                   
-                  {/* Secondary nodes */}
-                  <circle cx="175" cy="100" r="5" fill="#84cc16" />
-                  <circle cx="225" cy="160" r="5" fill="#84cc16" />
-                  <circle cx="150" cy="220" r="5" fill="#84cc16" />
-                  <circle cx="75" cy="160" r="5" fill="#84cc16" />
-                  <circle cx="125" cy="100" r="5" fill="#84cc16" />
+                  {/* Remaining static lines */}
+                  <line x1="200" y1="130" x2="180" y2="190" stroke="#00c9ff" strokeWidth="1" opacity="0.5" />
+                  <line x1="180" y1="190" x2="120" y2="190" stroke="#92fe9d" strokeWidth="1" opacity="0.5" />
+                  <line x1="120" y1="190" x2="100" y2="130" stroke="#92fe9d" strokeWidth="1" opacity="0.5" />
+                  <line x1="100" y1="130" x2="200" y2="130" stroke="#00c9ff" strokeWidth="1" opacity="0.5" />
                   
-                  {/* Secondary connections */}
-                  <line x1="200" y1="130" x2="175" y2="100" stroke="#84cc16" strokeWidth="1" opacity="0.5" />
-                  <line x1="200" y1="130" x2="225" y2="160" stroke="#84cc16" strokeWidth="1" opacity="0.5" />
-                  <line x1="180" y1="190" x2="225" y2="160" stroke="#84cc16" strokeWidth="1" opacity="0.5" />
-                  <line x1="180" y1="190" x2="150" y2="220" stroke="#84cc16" strokeWidth="1" opacity="0.5" />
-                  <line x1="120" y1="190" x2="150" y2="220" stroke="#84cc16" strokeWidth="1" opacity="0.5" />
-                  <line x1="120" y1="190" x2="75" y2="160" stroke="#84cc16" strokeWidth="1" opacity="0.5" />
-                  <line x1="100" y1="130" x2="75" y2="160" stroke="#84cc16" strokeWidth="1" opacity="0.5" />
-                  <line x1="100" y1="130" x2="125" y2="100" stroke="#84cc16" strokeWidth="1" opacity="0.5" />
+                  {/* Secondary nodes with subtle animations */}
+                  {[
+                    { cx: 175, cy: 100, fill: "#00c9ff", delay: 0 },
+                    { cx: 225, cy: 160, fill: "#92fe9d", delay: 0.5 },
+                    { cx: 150, cy: 220, fill: "#92fe9d", delay: 1 },
+                    { cx: 75, cy: 160, fill: "#92fe9d", delay: 1.5 },
+                    { cx: 125, cy: 100, fill: "#00c9ff", delay: 2 }
+                  ].map((node, index) => (
+                    <motion.circle 
+                      key={index}
+                      cx={node.cx} 
+                      cy={node.cy} 
+                      r="5" 
+                      fill={node.fill}
+                      animate={{ r: [5, 6, 5], opacity: [1, 0.7, 1] }}
+                      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: node.delay }}
+                    />
+                  ))}
+                  
+                  {/* Secondary connections remain static */}
+                  <line x1="200" y1="130" x2="175" y2="100" stroke="#00c9ff" strokeWidth="1" opacity="0.5" />
+                  <line x1="200" y1="130" x2="225" y2="160" stroke="#92fe9d" strokeWidth="1" opacity="0.5" />
+                  <line x1="180" y1="190" x2="225" y2="160" stroke="#92fe9d" strokeWidth="1" opacity="0.5" />
+                  <line x1="180" y1="190" x2="150" y2="220" stroke="#92fe9d" strokeWidth="1" opacity="0.5" />
+                  <line x1="120" y1="190" x2="150" y2="220" stroke="#92fe9d" strokeWidth="1" opacity="0.5" />
+                  <line x1="120" y1="190" x2="75" y2="160" stroke="#92fe9d" strokeWidth="1" opacity="0.5" />
+                  <line x1="100" y1="130" x2="75" y2="160" stroke="#00c9ff" strokeWidth="1" opacity="0.5" />
+                  <line x1="100" y1="130" x2="125" y2="100" stroke="#00c9ff" strokeWidth="1" opacity="0.5" />
                 </svg>
               </div>
             </div>
           </div>
           
-          {/* Text Content - Modified to mention future expansion without AI specifics */}
-          <div className="md:w-1/2">
-            <h3 className="text-2xl font-bold mb-4 text-lime-200">Looking to the Future</h3>
-            <p className="text-lime-200/80 mb-4 leading-relaxed">
+          {/* Text Content with staggered animation */}
+          <motion.div 
+            className="md:w-1/2"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.5 }}
+          >
+            <motion.h3 
+              variants={itemVariants}
+              className="text-2xl font-bold mb-4 text-[#fffce1]"
+            >
+              <motion.span
+                className="inline-block"
+                animate={{ scale: [1, 1.05, 1] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              >
+                Looking to the Future
+              </motion.span>
+            </motion.h3>
+            <motion.p 
+              variants={itemVariants}
+              className="text-[#fffce1]/80 mb-4 leading-relaxed"
+            >
               Ariq Systems is committed to staying at the forefront of technology, with plans to expand into emerging 
               fields including artificial intelligence as part of our commitment to delivering tomorrow's solutions today.
-            </p>
-            <p className="text-lime-200/80 mb-6 leading-relaxed">
+            </motion.p>
+            <motion.p 
+              variants={itemVariants}
+              className="text-[#fffce1]/80 mb-6 leading-relaxed"
+            >
               With a foundation built on technical excellence and a dedication to continuous learning, we're positioned 
               to help your business not just keep pace with technology, but harness it for competitive advantage.
-            </p>
-            <ul className="space-y-2">
+            </motion.p>
+            <motion.ul 
+              variants={containerVariants}
+              className="space-y-2"
+            >
               {["Cutting-Edge Technologies", "Performance Optimization", "Responsive Design", "Scalable Architecture", "Security Best Practices", "Future-Proof Development"].map((skill, index) => (
-                <li key={index} className="flex items-center">
-                  <span className="w-2 h-2 rounded-full bg-amber-400 mr-2"></span>
-                  <span className="text-lime-200/90">{skill}</span>
-                </li>
+                <motion.li 
+                  key={index} 
+                  className="flex items-center"
+                  variants={itemVariants}
+                  whileHover={{ x: 5, transition: { duration: 0.2 } }}
+                >
+                  <motion.span 
+                    className="w-2 h-2 rounded-full mr-2"
+                    style={{ backgroundColor: index % 2 === 0 ? '#00c9ff' : '#92fe9d' }}
+                    animate={{ scale: [1, 1.5, 1] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: index * 0.2 }}
+                  ></motion.span>
+                  <span className="text-[#fffce1]/90">{skill}</span>
+                </motion.li>
               ))}
-            </ul>
-          </div>
+            </motion.ul>
+          </motion.div>
         </motion.div>
         
-        {/* Call to Action */}
+        {/* Call to Action with attention-grabbing animations */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.7, delay: 0.6 }}
           className="text-center mt-20"
         >
-          <h3 className="text-3xl font-bold mb-6 text-lime-200">Let's Build Something Smart Together</h3>
-          <p className="text-lime-200/80 max-w-2xl mx-auto mb-8">
+          <motion.h3 
+            className="text-3xl font-bold mb-6 text-[#fffce1]"
+            animate={{ 
+              textShadow: [
+                "0 0 5px rgba(0, 201, 255, 0)", 
+                "0 0 10px rgba(0, 201, 255, 0.3)", 
+                "0 0 5px rgba(0, 201, 255, 0)"
+              ]
+            }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          >
+            Let's Build Something Smart Together
+          </motion.h3>
+          <motion.p 
+            className="text-[#fffce1]/80 max-w-2xl mx-auto mb-8"
+            variants={fadeInUp}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+          >
             Ready to transform your ideas into powerful digital solutions? Leverage our expertise in web and mobile 
             development to create standout applications that drive results.
-          </p>
+          </motion.p>
           <motion.a
             href="#contact"
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ 
+              scale: 1.05, 
+              boxShadow: '0 0 25px rgba(0, 201, 255, 0.4)'
+            }}
             whileTap={{ scale: 0.95 }}
-            className="inline-block px-8 py-4 bg-gradient-to-r from-lime-500 to-amber-500 rounded-xl text-black font-medium hover:from-lime-400 hover:to-amber-400 transition-all duration-300 shadow-lg"
+            className="inline-block px-8 py-4 text-[#fffce1] font-medium rounded-xl transition-all duration-300 relative"
+            style={{
+              border: '2px solid transparent',
+              backgroundImage: 'linear-gradient(#0d0d0d, #0d0d0d), linear-gradient(90deg, #00c9ff, #92fe9d)',
+              backgroundOrigin: 'border-box',
+              backgroundClip: 'padding-box, border-box',
+              boxShadow: '0 0 20px rgba(0, 201, 255, 0.2)'
+            }}
           >
-            Start a Conversation
+            <motion.span 
+              animate={{ y: [0, -3, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              className="relative z-10"
+            >
+              Contact Me
+            </motion.span>
+            
+            {/* Animated pulse effect around button */}
+            <motion.span
+              className="absolute inset-0 rounded-xl"
+              animate={{ 
+                boxShadow: [
+                  '0 0 0 0 rgba(0, 201, 255, 0.1)',
+                  '0 0 0 10px rgba(0, 201, 255, 0)',
+                ],
+              }}
+              transition={{ 
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeOut",
+              }}
+            />
           </motion.a>
         </motion.div>
       </div>
