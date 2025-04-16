@@ -132,7 +132,7 @@ export default function Navbar() {
         <div className="flex items-center space-x-5">
           {/* GitHub */}
           <motion.a 
-            href="https://github.com/yourusername" 
+            href="https://github.com/Abdulrehman-iq"
             target="_blank"
             rel="noopener noreferrer"
             className="text-[#fffce1]/80 hover:text-[#fffce1] transition-colors"
@@ -145,7 +145,7 @@ export default function Navbar() {
           
           {/* LinkedIn */}
           <motion.a 
-            href="https://linkedin.com/in/yourusername" 
+            href="https://www.linkedin.com/in/abdulrehman-iqbal-24a129219/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-400 hover:text-blue-300 transition-colors"
@@ -158,7 +158,7 @@ export default function Navbar() {
           
           {/* WhatsApp */}
           <motion.a 
-            href="https://wa.me/yournumber" 
+            href="https://wa.me/923338681426"
             target="_blank"
             rel="noopener noreferrer"
             className="text-[#fffce1]/80 hover:text-[#fffce1] transition-colors"

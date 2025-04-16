@@ -4,10 +4,9 @@
 import Hero from './components/Hero/Hero'
 import Introduction from './components/Introduction/Introduction'
 import { useTheme } from './components/context/ThemeContext'
-import { ProjectDisplay } from './components/Projects/ProjectDisplay'
+import Experience from './components/Projects/Experience'
 import WhyChooseAriqSystems from './components/WhyChooseAriqSystems/WhyChooseAriqSystems'
 import { Footer } from './components/Footer/Footer'
-
 
 export default function Home() {
   const { styles } = useTheme();
@@ -16,9 +15,8 @@ export default function Home() {
     <div className={`min-h-screen transition-colors duration-300 ${styles.mainBg}`}>
       <Hero />
       <Introduction />
-      <ProjectDisplay />
+      <Experience />
       <WhyChooseAriqSystems />
-      
       <Footer />
     </div>
   )

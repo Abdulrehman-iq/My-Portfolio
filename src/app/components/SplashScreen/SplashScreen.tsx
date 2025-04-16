@@ -26,7 +26,7 @@ const SplashScreen = ({ children }: { children: ReactNode }) => {
       originalOverflow.current = document.body.style.overflow || ''
     }
     
-    // Set body styles
+    // Set body styles - exact color theme
     document.body.style.backgroundColor = '#0d0d0d'
     document.body.style.color = '#fffce1'
     document.body.style.overflow = 'hidden'
@@ -185,7 +185,11 @@ const SplashScreen = ({ children }: { children: ReactNode }) => {
       <AnimatePresence mode="wait">
         {loading && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-[#0d0d0d] overflow-hidden"
+            className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden"
+            style={{ 
+              backgroundColor: '#0d0d0d',
+              background: 'linear-gradient(135deg, rgba(13,13,13,1) 0%, rgba(18,18,18,1) 100%)'
+            }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ 
@@ -197,106 +201,54 @@ const SplashScreen = ({ children }: { children: ReactNode }) => {
             }}
             transition={{ duration: 0.3 }}
           >
-            {/* Rest of splash screen content remains the same */}
-            {/* Full-screen animated gradient background */}
-            <motion.div 
+            {/* Subtle, cleaner gradient overlay */}
+            <div 
               className="absolute inset-0"
-              animate={{ 
-                background: [
-                  'radial-gradient(circle at 20% 30%, rgba(74, 222, 128, 0.05) 0%, rgba(13, 13, 13, 0) 50%)',
-                  'radial-gradient(circle at 80% 10%, rgba(34, 211, 238, 0.05) 0%, rgba(13, 13, 13, 0) 50%)',
-                  'radial-gradient(circle at 40% 80%, rgba(96, 165, 250, 0.05) 0%, rgba(13, 13, 13, 0) 50%)',
-                  'radial-gradient(circle at 20% 30%, rgba(74, 222, 128, 0.05) 0%, rgba(13, 13, 13, 0) 50%)',
-                ]
-              }}
-              transition={{ 
-                duration: 15, 
-                repeat: Infinity, 
-                repeatType: 'mirror',
-                ease: 'linear' 
+              style={{ 
+                background: 'linear-gradient(135deg, rgba(0, 201, 255, 0.03) 0%, rgba(146, 254, 157, 0.02) 50%, rgba(96, 165, 250, 0.03) 100%)',
+                backdropFilter: 'blur(2px)'
               }}
             />
             
-            {/* Background gradient elements */}
+            {/* Cleaner, more refined gradient elements */}
             <div className="absolute inset-0 z-0 overflow-hidden">
-              {/* Animated background elements */}
-              <motion.div 
-                animate={{ 
-                  scale: [1, 1.2, 1],
-                  opacity: [0.4, 0.6, 0.4],
-                  x: [0, 30, 0],
+              {/* Top gradient accent */}
+              <div 
+                className="absolute top-0 left-0 w-full h-1"
+                style={{
+                  background: 'linear-gradient(90deg, rgba(0, 201, 255, 0.3), rgba(146, 254, 157, 0.3), rgba(96, 165, 250, 0.3))'
                 }}
-                transition={{ 
-                  duration: 8, 
-                  repeat: Infinity,
-                  repeatType: "reverse" 
-                }}
-                className="absolute top-20 -left-20 w-[300px] md:w-[500px] h-[300px] md:h-[500px] rounded-full bg-green-400/10 blur-[80px]"
-              ></motion.div>
+              ></div>
               
-              <motion.div 
-                animate={{ 
-                  scale: [1, 1.3, 1],
-                  opacity: [0.4, 0.6, 0.4],
-                  y: [0, -40, 0]
+              {/* Refined accent 1 - Cyan */}
+              <div 
+                className="absolute top-[10%] left-[10%] w-32 h-32 md:w-64 md:h-64"
+                style={{
+                  background: 'radial-gradient(circle, rgba(0, 201, 255, 0.07) 0%, rgba(0, 201, 255, 0) 70%)',
+                  opacity: 0.4
                 }}
-                transition={{ 
-                  duration: 10, 
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                  delay: 0.5
-                }}
-                className="absolute -bottom-40 -right-20 w-[300px] md:w-[600px] h-[300px] md:h-[600px] rounded-full bg-blue-400/10 blur-[80px] md:blur-[100px]"
-              ></motion.div>
+              ></div>
               
-              <motion.div
-                animate={{ 
-                  scale: [1, 1.5, 1],
-                  opacity: [0.2, 0.5, 0.2],
-                  x: [0, -30, 0],
-                  y: [0, 20, 0]
+              {/* Refined accent 2 - Green */}
+              <div 
+                className="absolute bottom-[15%] right-[15%] w-48 h-48 md:w-80 md:h-80"
+                style={{
+                  background: 'radial-gradient(circle, rgba(146, 254, 157, 0.07) 0%, rgba(146, 254, 157, 0) 70%)',
+                  opacity: 0.4
                 }}
-                transition={{ 
-                  duration: 7, 
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                  delay: 1
-                }}
-                className="absolute top-1/3 right-[20%] w-[150px] md:w-[300px] h-[150px] md:h-[300px] rounded-full bg-cyan-400/5 blur-[40px] md:blur-[60px]"
-              ></motion.div>
+              ></div>
               
-              <motion.div
-                animate={{ 
-                  scale: [1, 1.2, 1],
-                  opacity: [0.2, 0.4, 0.2],
-                  x: [0, 40, 0],
-                  y: [0, -30, 0]
+              {/* Refined accent 3 - Blue */}
+              <div
+                className="absolute top-[60%] left-[20%] w-24 h-24 md:w-40 md:h-40"
+                style={{
+                  background: 'radial-gradient(circle, rgba(96, 165, 250, 0.07) 0%, rgba(96, 165, 250, 0) 70%)',
+                  opacity: 0.3
                 }}
-                transition={{ 
-                  duration: 9, 
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                  delay: 1.5
-                }}
-                className="absolute bottom-1/3 left-[30%] w-[125px] md:w-[250px] h-[125px] md:h-[250px] rounded-full bg-purple-400/5 blur-[50px] md:blur-[70px]"
-              ></motion.div>
-              
-              <motion.div
-                animate={{ 
-                  scale: [1, 1.4, 1],
-                  opacity: [0.2, 0.4, 0.2],
-                  rotate: [0, 10, 0]
-                }}
-                transition={{ 
-                  duration: 11, 
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                  delay: 2
-                }}
-                className="absolute top-[60%] right-[40%] w-[100px] md:w-[200px] h-[100px] md:h-[200px] rounded-full bg-pink-400/5 blur-[40px] md:blur-[60px]"
-              ></motion.div>
+              ></div>
             </div>
             
+            {/* Main content container with subtle gradient border */}
             <div className="max-w-5xl w-full relative z-10 py-6 md:py-10">
               <div className="splash-content flex flex-col items-center justify-center px-4 md:px-6">
                 {/* Main Content */}
@@ -307,24 +259,28 @@ const SplashScreen = ({ children }: { children: ReactNode }) => {
                     className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-extrabold font-[Outfit] tracking-tighter mb-4 md:mb-6 text-[#fffce1] perspective-1000"
                   >
                     ARIQ Systems
+                    <span className="text-[#00c9ff]">.</span>
                   </div>
                   
-                  {/* Slogan with animated underline */}
+                  {/* Slogan with clean animated underline */}
                   <div className="relative">
                     <div 
                       ref={sloganRef} 
-                      className="text-base sm:text-lg md:text-xl font-medium text-[#fffce1]/80 mb-8 md:mb-12"
+                      className="text-base sm:text-lg md:text-xl font-medium text-[#fffce1]/80 mb-8 md:mb-12 font-dm-sans"
                     >
                       Next-Gen Solutions for a Fast-Changing World
                     </div>
                     <motion.div 
-                      className="h-[2px] w-0 bg-gradient-to-r from-green-400 via-cyan-400 to-blue-400 absolute bottom-6 md:bottom-8 left-1/2 transform -translate-x-1/2"
-                      animate={{ width: ["0%", "80%", "60%", "70%"] }}
+                      className="h-[2px] w-0 absolute bottom-6 md:bottom-8 left-1/2 transform -translate-x-1/2"
+                      style={{
+                        background: 'linear-gradient(90deg, #00c9ff, #92fe9d, #60a5fa)',
+                        boxShadow: '0 0 5px rgba(0, 201, 255, 0.3)'
+                      }}
+                      animate={{ width: ["0%", "70%"] }}
                       transition={{ 
-                        duration: 2.5, 
+                        duration: 2, 
                         delay: 2.5,
-                        times: [0, 0.6, 0.8, 1],
-                        ease: "easeInOut" 
+                        ease: "easeOut" 
                       }}
                     />
                   </div>
@@ -351,18 +307,22 @@ const SplashScreen = ({ children }: { children: ReactNode }) => {
               </div>
             </div>
             
-            {/* Loading indicator - exactly 6 seconds */}
+            {/* Refined loading indicator with smooth gradient - exactly 6 seconds */}
             <div className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-0 right-0 flex justify-center">
-              <div className="relative w-32 sm:w-40 md:w-48 h-0.5 md:h-1 bg-[#fffce1]/10 rounded-full overflow-hidden">
+              <div className="relative w-32 sm:w-40 md:w-48 h-0.5 md:h-1 bg-[#1a1a1a] rounded-full overflow-hidden">
                 <motion.div 
-                  className="absolute top-0 left-0 h-full bg-gradient-to-r from-green-400 via-cyan-400 to-blue-400 rounded-full"
+                  className="absolute top-0 left-0 h-full rounded-full"
+                  style={{
+                    background: 'linear-gradient(90deg, #00c9ff, #92fe9d, #60a5fa)',
+                    boxShadow: '0 0 4px rgba(0, 201, 255, 0.5)'
+                  }}
                   initial={{ width: 0 }}
                   animate={{ width: "100%" }}
                   transition={{ duration: 6, ease: "linear" }}
                 />
               </div>
             </div>
-          </motion.div>
+          </motion.div> 
         )}
       </AnimatePresence>
       

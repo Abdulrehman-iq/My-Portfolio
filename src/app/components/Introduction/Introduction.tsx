@@ -7,6 +7,7 @@ import { useTheme } from '../context/ThemeContext';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import SplitType from 'split-type';
+import Link from 'next/link';
 
 // Register ScrollTrigger
 if (typeof window !== 'undefined') {
@@ -42,11 +43,11 @@ const technologies = {
   ],
 };
 
-// Aqua Green to Neon Blue gradient
+// Updated gradient colors to match Hero.tsx
 const gradientColors = {
-  start: "#4ade80", // green-400 (Aqua Green)
-  mid: "#22d3ee",   // cyan-400
-  end: "#60a5fa"    // blue-400 (Neon Blue)
+  start: "#00c9ff", // cyan
+  mid: "#92fe9d",   // green
+  end: "#60a5fa"    // blue
 };
 
 const Introduction = () => {
@@ -204,12 +205,12 @@ const Introduction = () => {
         if (line === '') {
           lineElement.innerHTML = '&nbsp;';
         } else {
-          // Add syntax highlighting with the Aqua Green to Neon Blue theme
-          line = line.replace(/function|const|return|useEffect/g, '<span class="text-green-400">$&</span>');
-          line = line.replace(/useState|setInterval|clearInterval/g, '<span class="text-cyan-400">$&</span>');
-          line = line.replace(/'[^']*'/g, '<span class="text-blue-400">$&</span>');
+          // Update syntax highlighting with new theme colors
+          line = line.replace(/function|const|return|useEffect/g, `<span style="color: ${gradientColors.start}">$&</span>`);
+          line = line.replace(/useState|setInterval|clearInterval/g, `<span style="color: ${gradientColors.mid}">$&</span>`);
+          line = line.replace(/'[^']*'/g, `<span style="color: ${gradientColors.end}">$&</span>`);
           line = line.replace(/\{|\}|\(|\)|;|<|>|\[|\]/g, '<span class="text-gray-400">$&</span>');
-          line = line.replace(/true/g, '<span class="text-cyan-300">$&</span>');
+          line = line.replace(/true/g, `<span style="color: ${gradientColors.mid}">$&</span>`);
           
           lineElement.innerHTML = line;
         }
@@ -228,32 +229,45 @@ const Introduction = () => {
   return (
     <section 
       ref={sectionRef}
-      className={`min-h-screen ${styles.mainBg} px-4 md:px-0 py-20 font-outfit relative overflow-hidden`}
+      className="min-h-screen px-4 md:px-0 py-20 font-outfit relative overflow-hidden"
+      style={{ backgroundColor: '#0d0d0d' }} // Exact theme background color
     >
-      {/* Background elements with Aqua Green to Neon Blue theme */}
+      {/* Background elements with updated theme colors */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        {/* Abstract shape 1 - Aqua Green */}
+        {/* Abstract shape 1 - Cyan */}
         <motion.div 
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.4 }}
+          animate={{ opacity: 0.35 }}
           transition={{ duration: 1.5, delay: 0.2 }}
-          className="bg-shape absolute top-20 -left-20 w-[500px] h-[500px] rounded-full bg-green-400/10 blur-[80px]"
+          className="absolute top-20 -left-20 w-[500px] h-[500px] rounded-full"
+          style={{
+            background: 'radial-gradient(circle, rgba(0, 201, 255, 0.2), rgba(0, 201, 255, 0.05))',
+            filter: 'blur(80px)'
+          }}
         ></motion.div>
         
-        {/* Abstract shape 2 - Neon Blue */}
+        {/* Abstract shape 2 - Green */}
         <motion.div 
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.4 }}
+          animate={{ opacity: 0.35 }}
           transition={{ duration: 1.5, delay: 0.5 }}
-          className="bg-shape absolute -bottom-40 -right-20 w-[600px] h-[600px] rounded-full bg-blue-400/10 blur-[100px]"
+          className="absolute -bottom-40 -right-20 w-[600px] h-[600px] rounded-full"
+          style={{
+            background: 'radial-gradient(circle, rgba(146, 254, 157, 0.2), rgba(146, 254, 157, 0.05))',
+            filter: 'blur(100px)'
+          }}
         ></motion.div>
         
-        {/* Extra floating elements - Cyan */}
+        {/* Extra floating elements - Blue */}
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.2 }}
+          animate={{ opacity: 0.25 }}
           transition={{ duration: 1.5, delay: 0.7 }}
-          className="bg-shape absolute top-1/3 left-[15%] w-[200px] h-[200px] rounded-full bg-cyan-400/5 blur-[60px]"
+          className="absolute top-1/3 left-[15%] w-[200px] h-[200px] rounded-full"
+          style={{
+            background: 'radial-gradient(circle, rgba(96, 165, 250, 0.15), rgba(96, 165, 250, 0.03))',
+            filter: 'blur(60px)'
+          }}
         ></motion.div>
       </div>
 
@@ -266,25 +280,32 @@ const Introduction = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
+            {/* Updated name heading to be more visible with theme colors */}
             <h1 
               ref={headingRef}
-              className="text-4xl md:text-5xl font-extrabold mb-6 text-[#fffce1] leading-tight font-outfit tracking-tight"
+              className="text-4xl md:text-5xl font-extrabold mb-6 leading-tight font-outfit tracking-tight"
+              style={{ color: '#fffce1' }}
             >
-              <span className="bg-gradient-to-r from-green-400 via-cyan-400 to-blue-400 text-transparent bg-clip-text">
+              <span className="text-transparent bg-clip-text"
+                style={{ backgroundImage: 'linear-gradient(90deg, #00c9ff, #92fe9d)' }}
+              >
                 Hi, I'm Abdulrehman Iqbal
               </span>
             </h1>
             
+            {/* Updated job title to be italic with specified color (#fffce1) */}
             <h2 
               ref={subheadingRef}
-              className="text-xl md:text-2xl font-semibold mb-6 text-cyan-400"
+              className="text-xl md:text-2xl font-semibold mb-6 italic"
+              style={{ color: '#fffce1' }}
             >
               Full-Stack Web & Mobile Developer
             </h2>
             
             <div 
               ref={textContentRef}
-              className="mb-8 text-[#fffce1]/90 text-lg text-justify"
+              className="mb-8 text-lg text-justify"
+              style={{ color: '#fffce1' }}
             >
               <p className="mb-4">
                 I'm a Full Stack Developer skilled in building both mobile and web applications. I've developed websites for UK-based companies and created several personal projects to stay ahead in tech. From responsive websites to intuitive mobile apps, I focus on clean design and solid performance to help businesses grow and stand out.
@@ -302,14 +323,14 @@ const Introduction = () => {
                   <div key={category} className="mb-6 skill-category">
                     <h3 className="text-sm uppercase tracking-wider font-medium mb-3 text-[#fffce1]/60">
                       {category === 'frontend' ? 'FRONTEND' : 
-                       category === 'backend' ? 'BACKEND' : 
-                       category === 'mobile' ? 'MOBILE DEVELOPMENT' : 'TOOLS & PLATFORMS'}
+                      category === 'backend' ? 'BACKEND' : 
+                      category === 'mobile' ? 'MOBILE DEVELOPMENT' : 'TOOLS & PLATFORMS'}
                     </h3>
                     <div className="flex flex-wrap gap-3">
                       {techs.map((tech, index) => (
                         <motion.div
                           key={tech.name}
-                          className={`flex items-center gap-2 px-4 py-2 rounded-full bg-[#1a1a1a] border border-[#2a2a2a] hover:border-[#3a3a3a] hover:bg-[#1F1F1F] transition-all duration-300`}
+                          className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#1a1a1a] border border-[#2a2a2a] hover:border-[#3a3a3a] hover:bg-[#1F1F1F] transition-all duration-300"
                           initial={{ opacity: 0, x: -10 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: categoryIndex * 0.1 + index * 0.05, duration: 0.5 }}
@@ -325,21 +346,23 @@ const Introduction = () => {
             </div>
             
             <div ref={buttonsRef} className="flex space-x-4">
-  <motion.button 
-    className="px-6 py-3 font-medium rounded-xl border-2 border-[#fffce1] text-[#fffce1] hover:bg-[#fffce1]/10 transition-colors duration-200"
-    whileHover={{ scale: 1.05 }}
-    whileTap={{ scale: 0.95 }}
-  >
-    View Projects
-  </motion.button>
-  <motion.button 
-    className="px-6 py-3 font-medium rounded-xl border-2 border-[#fffce1]/70 text-[#fffce1]/90 hover:border-[#fffce1] hover:text-[#fffce1] transition-colors duration-200"
-    whileHover={{ scale: 1.05 }}
-    whileTap={{ scale: 0.95 }}
-  >
-    Contact Me
-  </motion.button>
-</div>
+              <motion.button 
+                className="px-6 py-3 font-medium rounded-xl border-2 border-[#fffce1] text-[#fffce1] hover:bg-[#fffce1]/10 transition-colors duration-200"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                View Projects Below
+              </motion.button>
+              <Link href="mailto:abdulrehman.iq@outlook.com">
+                <motion.button 
+                  className="px-6 py-3 font-medium rounded-xl border-2 border-[#fffce1]/70 text-[#fffce1]/90 hover:border-[#fffce1] hover:text-[#fffce1] transition-colors duration-200"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Contact Me
+                </motion.button>
+              </Link>
+            </div>
           </motion.div>
           
           {/* Right column - Visual content */}
@@ -364,9 +387,10 @@ const Introduction = () => {
                 </div>
               </div>
               
-              {/* Floating gradient elements */}
+              {/* Floating gradient elements - updated with theme colors */}
               <motion.div 
-                className="absolute -top-4 -right-4 w-24 h-24 rounded-lg opacity-50 blur-lg bg-gradient-to-r from-green-400 to-cyan-400"
+                className="absolute -top-4 -right-4 w-24 h-24 rounded-lg opacity-50 blur-lg"
+                style={{ background: `linear-gradient(to right, ${gradientColors.start}, ${gradientColors.mid})` }}
                 animate={{ 
                   scale: [1, 1.2, 1],
                   rotate: [0, 10, 0],
@@ -378,7 +402,8 @@ const Introduction = () => {
                 }}
               />
               <motion.div 
-                className="absolute -bottom-8 -left-8 w-32 h-32 rounded-full opacity-50 blur-xl bg-gradient-to-r from-cyan-400 to-blue-400"
+                className="absolute -bottom-8 -left-8 w-32 h-32 rounded-full opacity-50 blur-xl"
+                style={{ background: `linear-gradient(to right, ${gradientColors.mid}, ${gradientColors.end})` }}
                 animate={{ 
                   scale: [1, 1.3, 1],
                   x: [0, 10, 0],
@@ -416,12 +441,13 @@ const Introduction = () => {
                   }}
                 >
                   <div 
-                    className={`p-3 rounded-lg shadow-lg bg-gradient-to-r ${
-                      index % 2 === 0 
-                        ? 'from-green-400 to-cyan-400'  
-                        : 'from-cyan-400 to-blue-400'
-                    }`}
-                    style={{ transform: `scale(${item.size})` }}
+                    className="p-3 rounded-lg shadow-lg"
+                    style={{
+                      background: index % 2 === 0 
+                        ? `linear-gradient(to right, ${gradientColors.start}, ${gradientColors.mid})` 
+                        : `linear-gradient(to right, ${gradientColors.mid}, ${gradientColors.end})`,
+                      transform: `scale(${item.size})`
+                    }}
                   >
                     <item.Icon style={{ color: item.color }} />
                   </div>

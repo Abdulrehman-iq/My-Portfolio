@@ -31,7 +31,7 @@ export default function WhyChooseAriqSystems() {
   
   // Animated typing effect for the title
   const [displayedTitle, setDisplayedTitle] = useState("")
-  const fullTitle = "Why Choose Ariq Systems"
+  const fullTitle = "Your Next Reliable Developer" // Updated title
   
   useEffect(() => {
     if (isTitleInView) {
@@ -220,8 +220,7 @@ export default function WhyChooseAriqSystems() {
           className="text-center max-w-3xl mx-auto mb-16"
         >
           <motion.h2 
-            className="text-4xl md:text-5xl font-bold mb-6 text-transparent bg-clip-text font-outfit"
-            style={{ backgroundImage: 'linear-gradient(90deg, #00c9ff, #92fe9d)' }}
+            className="text-4xl md:text-5xl font-bold mb-6 text-[#fffce1] font-outfit"
           >
             {displayedTitle}
             <motion.span 
@@ -639,7 +638,7 @@ export default function WhyChooseAriqSystems() {
             development to create standout applications that drive results.
           </motion.p>
           <motion.a
-            href="#contact"
+            href="mailto:abdulrehman.iq@outlook.com" // Added email link
             whileHover={{ 
               scale: 1.05, 
               boxShadow: '0 0 25px rgba(0, 201, 255, 0.4)'
