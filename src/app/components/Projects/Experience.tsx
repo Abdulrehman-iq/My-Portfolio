@@ -3,9 +3,8 @@
 
 import { useRef, useState, useEffect } from 'react'
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion'
-import { FaGlobe,FaRunning, FaShoppingBag, FaCode, FaTshirt, FaMobileAlt, FaTaxi, FaUsers, FaExternalLinkAlt, FaArrowRight, FaRegEye } from 'react-icons/fa'
+import { FaGlobe, FaRunning, FaShoppingBag, FaTshirt, FaTaxi, FaUsers, FaExternalLinkAlt } from 'react-icons/fa'
 import Image from 'next/image'
-import { useTheme } from '../context/ThemeContext'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
 
@@ -28,7 +27,6 @@ interface Project {
 }
 
 const Experience = () => {
-  const { styles } = useTheme()
   const containerRef = useRef<HTMLDivElement>(null)
   const headerRef = useRef<HTMLDivElement>(null)
   const professionalRef = useRef<HTMLDivElement>(null)
@@ -295,7 +293,7 @@ const Experience = () => {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="text-lg text-center max-w-3xl mx-auto text-[#fffce1]/90 mb-12"
         >
-          From professional client work to personal passion projects, here's a selection of applications I've built across web and mobile platforms.
+          From professional client work to personal passion projects, here&apos;s a selection of applications I&apos;ve built across web and mobile platforms.
         </motion.p>
         
         {/* Category tabs with active indicator */}

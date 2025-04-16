@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { FaLinux, FaReact, FaNodeJs, FaApple, FaDatabase, FaGithub, FaCode, FaServer, FaJs, FaAndroid } from 'react-icons/fa';
 import { SiTypescript, SiNextdotjs, SiTailwindcss, SiMongodb, SiPostgresql, SiExpress, SiFlutter, SiAndroidstudio } from 'react-icons/si';
 import { TbBrandReactNative } from 'react-icons/tb';
-import { useTheme } from '../context/ThemeContext';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import SplitType from 'split-type';
@@ -59,8 +58,6 @@ const Introduction = () => {
   const skillsRef = useRef<HTMLDivElement>(null);
   const buttonsRef = useRef<HTMLDivElement>(null);
   const codeBlockContainerRef = useRef<HTMLDivElement>(null);
-  
-  const { styles } = useTheme();
   
   // Text reveal animation on load
   useEffect(() => {
@@ -289,7 +286,7 @@ const Introduction = () => {
               <span className="text-transparent bg-clip-text"
                 style={{ backgroundImage: 'linear-gradient(90deg, #00c9ff, #92fe9d)' }}
               >
-                Hi, I'm Abdulrehman Iqbal
+                Hi, I&apos;m Abdulrehman Iqbal
               </span>
             </h1>
             
@@ -308,10 +305,10 @@ const Introduction = () => {
               style={{ color: '#fffce1' }}
             >
               <p className="mb-4">
-                I'm a Full Stack Developer skilled in building both mobile and web applications. I've developed websites for UK-based companies and created several personal projects to stay ahead in tech. From responsive websites to intuitive mobile apps, I focus on clean design and solid performance to help businesses grow and stand out.
+                I&apos;m a Full Stack Developer skilled in building both mobile and web applications. I&apos;ve developed websites for UK-based companies and created several personal projects to stay ahead in tech. From responsive websites to intuitive mobile apps, I focus on clean design and solid performance to help businesses grow and stand out.
               </p>
               <p>
-                I'm passionate about building technology that makes a positive impact, focusing on 
+                I&apos;m passionate about building technology that makes a positive impact, focusing on 
                 performance, accessibility, and intuitive user experiences. Every project is an opportunity 
                 to learn something new and push my creative boundaries.
               </p>

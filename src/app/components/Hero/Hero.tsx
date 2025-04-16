@@ -3,7 +3,6 @@
 import { useState, useEffect, MouseEvent, useRef } from "react"
 import { FaChevronDown, FaLayerGroup, FaMobile, FaDatabase, FaPlug } from 'react-icons/fa'
 import { HiOutlineSparkles } from 'react-icons/hi'
-import { useTheme } from '../context/ThemeContext'
 import { motion, AnimatePresence } from 'framer-motion'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
@@ -17,14 +16,7 @@ if (typeof window !== 'undefined') {
 export default function Hero() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const { styles } = useTheme();
   const impactWords = ["Innovation", "Simplicty", "Impact", "Excellence"];
-  
-  // Cyan to Green gradient
-  const gradientColors = {
-    start: "#00c9ff", // cyan
-    end: "#92fe9d"    // green
-  };
   
   // Refs for GSAP animations
   const sectionRef = useRef<HTMLElement>(null);
@@ -42,7 +34,7 @@ export default function Hero() {
     }, 3000);
     
     return () => clearInterval(interval);
-  }, []);
+  }, [impactWords.length]); // Fixed: Added missing dependency
 
   // Set loaded state after initial render
   useEffect(() => {

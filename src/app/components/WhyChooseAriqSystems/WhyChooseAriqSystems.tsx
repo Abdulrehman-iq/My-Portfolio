@@ -3,10 +3,8 @@
 import { useRef, useState, useEffect } from 'react'
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion'
 import { FaCode, FaMobileAlt, FaRocket, FaTools, FaUserTie, FaGlobe } from 'react-icons/fa'
-import { useTheme } from '../context/ThemeContext'
 
 export default function WhyChooseAriqSystems() {
-  const { styles } = useTheme()
   const containerRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(containerRef, { once: false, amount: 0.2 })
   
@@ -14,8 +12,16 @@ export default function WhyChooseAriqSystems() {
   const titleRef = useRef<HTMLHeadingElement>(null)
   const isTitleInView = useInView(titleRef, { once: true, amount: 0.5 })
   
-  const refs = Array.from({ length: 6 }).map(() => useRef<HTMLDivElement>(null))
-  const inViews = refs.map(ref => useInView(ref, { once: true, amount: 0.5 }))
+  // Create refs array manually instead of using map with hooks
+  const ref0 = useRef<HTMLDivElement>(null)
+  const ref1 = useRef<HTMLDivElement>(null)
+  const ref2 = useRef<HTMLDivElement>(null)
+  const ref3 = useRef<HTMLDivElement>(null)
+  const ref4 = useRef<HTMLDivElement>(null)
+  const ref5 = useRef<HTMLDivElement>(null)
+  
+  // Combine refs into an array for easier usage
+  const refs = [ref0, ref1, ref2, ref3, ref4, ref5]
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -47,13 +53,7 @@ export default function WhyChooseAriqSystems() {
       
       return () => clearInterval(typingInterval)
     }
-  }, [isTitleInView])
-  
-  // Cyan to Green gradient (matching Hero.tsx)
-  const gradientColors = {
-    start: "#00c9ff", // cyan
-    end: "#92fe9d"    // green
-  };
+  }, [isTitleInView, fullTitle])
   
   // Animated features with icons (removed AI specifics)
   const features = [
@@ -574,13 +574,13 @@ export default function WhyChooseAriqSystems() {
               className="text-[#fffce1]/80 mb-4 leading-relaxed"
             >
               Ariq Systems is committed to staying at the forefront of technology, with plans to expand into emerging 
-              fields including artificial intelligence as part of our commitment to delivering tomorrow's solutions today.
+              fields including artificial intelligence as part of our commitment to delivering tomorrow&apos;s solutions today.
             </motion.p>
             <motion.p 
               variants={itemVariants}
               className="text-[#fffce1]/80 mb-6 leading-relaxed"
             >
-              With a foundation built on technical excellence and a dedication to continuous learning, we're positioned 
+              With a foundation built on technical excellence and a dedication to continuous learning, we&apos;re positioned 
               to help your business not just keep pace with technology, but harness it for competitive advantage.
             </motion.p>
             <motion.ul 
@@ -625,7 +625,7 @@ export default function WhyChooseAriqSystems() {
             }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
           >
-            Let's Build Something Smart Together
+            Let&apos;s Build Something Smart Together
           </motion.h3>
           <motion.p 
             className="text-[#fffce1]/80 max-w-2xl mx-auto mb-8"

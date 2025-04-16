@@ -5,13 +5,12 @@ import Link from 'next/link';
 import { FaGithub, FaLinkedin, FaWhatsapp, FaReact, FaNodeJs } from 'react-icons/fa';
 import { SiNextdotjs, SiTailwindcss, SiTypescript } from 'react-icons/si';
 import { motion } from 'framer-motion';
-import { useTheme } from '../context/ThemeContext';
 import gsap from 'gsap';
 import SplitType from 'split-type';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const { styles } = useTheme();
+  // Remove unused styles import
   const logoRef = useRef<HTMLDivElement>(null);
   const logoCharsRef = useRef<HTMLSpanElement[]>([]);
   const [isAnimated, setIsAnimated] = useState(false);
@@ -74,7 +73,7 @@ export default function Navbar() {
         char.removeEventListener('mouseleave', () => {});
       });
     };
-  }, []);
+  }, [isAnimated]); // Add isAnimated to the dependency array
 
   // Tech icons that appear on logo hover
   const techIcons = [
@@ -102,9 +101,9 @@ export default function Navbar() {
           <Link href="/" className="block">
             <div 
               ref={logoRef} 
-              className="font-outfit font-extrabold text-xl md:text-2xl tracking-tight text-[#fffce1] perspective-1000"
+              className="font-outfit font-extrabold text-lg md:text-1xl tracking-tight text-[#fffce1] perspective-1000"
             >
-              ARIQ Systems
+              Abdulrehman Iqbal
               <span className="text-blue-400">.</span>
             </div>
           </Link>
