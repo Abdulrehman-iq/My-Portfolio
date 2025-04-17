@@ -260,9 +260,9 @@ export default function Hero() {
                 transition={{ duration: 0.1 }}
                 className="text-5xl sm:text-6xl md:text-7xl font-extrabold leading-tight text-[#fffce1] font-outfit tracking-tight"
               >
-                Transforming Ideas Into{' '}
+                Transforming Ideas Into  {' '}
                 <span 
-                  className="text-transparent bg-clip-text"
+                  className="text-[#fffcel] bg-clip-text"
                   style={{ backgroundImage: 'linear-gradient(90deg, #00c9ff, #92fe9d)' }}
                 >
                   Digital Reality

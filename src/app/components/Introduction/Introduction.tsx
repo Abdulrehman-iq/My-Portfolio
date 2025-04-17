@@ -283,7 +283,7 @@ const Introduction = () => {
               className="text-4xl md:text-5xl font-extrabold mb-6 leading-tight font-outfit tracking-tight"
               style={{ color: '#fffce1' }}
             >
-              <span className="text-transparent bg-clip-text"
+              <span className="text-[#fffcel]  bg-clip-text"
                 style={{ backgroundImage: 'linear-gradient(90deg, #00c9ff, #92fe9d)' }}
               >
                 Hi, I&apos;m Abdulrehman Iqbal
